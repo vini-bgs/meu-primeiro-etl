@@ -68,6 +68,12 @@ def converte_tipos(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def validar_regras(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Verifica se existe algum valor na coluna star_4_5 (notas promotas)
+    que estão com valores diferente de 0 e 1.
+    Se tiver, apaga aquela linha.
+    Além disso, informa se existe alguma linha com uma data futura
+    """
     try:
         linhas_invalidas = (~df["star_4_5"].isin([0, 1])).sum()
         logger.warning(f"Foram encontradas {linhas_invalidas} linhas inválidas")
@@ -87,6 +93,23 @@ def validar_regras(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def conta_duplicatas(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Verifica e loga a quantidade de tickets com mais de uma avaliação.
+    """
+    try:
+        logger.info("Verificando duplicatas...")
+        mask = df["origin_ticketid"].duplicated(keep=False)
+        qtde_duplicatas = df[mask]["origin_ticketid"].nunique()
+        logger.info(f"Foram encontrados {qtde_duplicatas} tickets duplicados")
+
+    except Exception as err:
+        logger.error(f"Atenção! {err}")
+        raise
+
+    return df
+
+
 if __name__ == "__main__":
     try:
         path: Path = Path("data/raw/csat.csv")
@@ -95,6 +118,8 @@ if __name__ == "__main__":
         df_sem_nulo = trata_nulos(df_colunas_renomeadas)
         df_convertido = converte_tipos(df_sem_nulo)
         df_validado = validar_regras(df_convertido)
-        print(df_validado)
+        df_sem_duplicatas = conta_duplicatas(df_validado)
+        print(df_sem_duplicatas)
+
     except Exception as err:
         print(err)
