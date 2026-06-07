@@ -30,5 +30,5 @@ if __name__ == "__main__":
     try:
         path: Path = Path("data/raw/filed.csv")
         print(csv_para_df(path))
-    except Exception:
-        print("err")
+    except Exception as err:
+        print(err)
