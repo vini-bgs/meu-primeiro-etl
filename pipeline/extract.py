@@ -22,13 +22,13 @@ def csv_para_df(caminho_arquivo: Path) -> pd.DataFrame:
     )
 
     logger.info(f"{len(df)} linhas carregadas de '{caminho_arquivo.name}'")
-
     return df
 
 
 if __name__ == "__main__":
     try:
-        path: Path = Path("data/raw/filed.csv")
-        print(csv_para_df(path))
+        path: Path = Path("data/raw/csat.csv")
+        df = csv_para_df(path)
+        print(df)
     except Exception as err:
         print(err)
