@@ -29,6 +29,6 @@ if __name__ == "__main__":
     try:
         path: Path = Path("data/raw/csat.csv")
         df = csv_para_df(path)
-        print(df)
+
     except Exception as err:
         print(err)

@@ -44,12 +44,57 @@ def trata_nulos(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def converte_tipos(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Define o tipo de cada coluna da tabela
+    """
+    try:
+        logger.info("Convertendo tipos das colunas...")
+        df["data_avaliacao"] = pd.to_datetime(df["data_avaliacao"], errors="coerce")
+        df["frontline"] = pd.to_numeric(df["frontline"], errors="coerce")
+        df["feedback"] = pd.to_numeric(df["feedback"], errors="coerce")
+        df["star_4_5"] = pd.to_numeric(df["star_4_5"], errors="coerce")
+        df["is_solved"] = pd.to_numeric(df["is_solved"], errors="coerce")
+        df["star_num"] = pd.to_numeric(df["star_num"], errors="coerce").astype("Int64")
+        df["id_usuario"] = df["id_usuario"].astype(str)
+
+        logger.info("Colunas convertidas...")
+
+    except Exception as err:
+        logger.error(f"Atenção! {err}")
+        raise
+
+    return df
+
+
+def validar_regras(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        linhas_invalidas = (~df["star_4_5"].isin([0, 1])).sum()
+        logger.warning(f"Foram encontradas {linhas_invalidas} linhas inválidas")
+        logger.info(f"Excluindo {linhas_invalidas} linhas")
+        df = df[df["star_4_5"].isin([0, 1])]
+        logger.info("Linhas excluidas")
+
+        data_minima = pd.Timestamp("2025-01-01")
+        hoje = pd.Timestamp.today()
+        datas_invalidas = (~df["data_avaliacao"].between(data_minima, hoje)).sum()
+        logger.warning(f"Foram encontradas {datas_invalidas} datas inválidas")
+
+    except Exception as err:
+        logger.error(f"Atenção! {err}")
+        raise
+
+    return df
+
+
 if __name__ == "__main__":
     try:
         path: Path = Path("data/raw/csat.csv")
         df = csv_para_df(path)
         df_colunas_renomeadas = renomeia_colunas(df)
-        df_final = trata_nulos(df_colunas_renomeadas)
-
+        df_sem_nulo = trata_nulos(df_colunas_renomeadas)
+        df_convertido = converte_tipos(df_sem_nulo)
+        df_validado = validar_regras(df_convertido)
+        print(df_validado)
     except Exception as err:
         print(err)
