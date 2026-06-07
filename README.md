@@ -121,5 +121,5 @@ Os dados utilizados neste projeto são fictícios, gerados via ChatGPT simulando
 
 **Vinícius** — Analista de Qualidade Jr em transição para Engenharia de Dados.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-vini--bgs-blue?logo=linkedin)](https://www.linkedin.com/in/vini-bgs)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-vini--bgs-blue?logo=linkedin)](www.linkedin.com/in/vinícius-borges-5a7b95150)
 [![GitHub](https://img.shields.io/badge/GitHub-vini--bgs-black?logo=github)](https://github.com/vini-bgs)
