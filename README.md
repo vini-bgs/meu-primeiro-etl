@@ -86,23 +86,6 @@ poetry install
 eval $(poetry env activate)
 ```
 
-### Configuração
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```
-SERVER=localhost
-DATABASE=meu_primeiro_etl
-DRIVER=ODBC Driver 17 for SQL Server
-TABLE=tb_csat
-```
-
-Crie o banco de dados no SQL Server:
-
-```sql
-CREATE DATABASE meu_primeiro_etl;
-```
-
 ### Execução
 
 ```bash
